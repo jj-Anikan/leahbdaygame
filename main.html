@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+    #game-container {
+      margin: 20px;
+    }
+    .balloon {
+      width: 40px;
+      height: 40px;
+      background-color: red;
+      border-radius: 50%;
+      display: inline-block;
+      margin: 5px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <div id="game-container">
+    <h1>Happy Birthday Game</h1>
+    <p>Click the balloons to pop them!</p>
+    <div id="balloons"></div>
+    <button id="start-button">Start Game</button>
+  </div>
+  <video id="birthday-video" style="display: none;">
+    <source src="video.mp4" type="video/mp4">
+    Your browser does not support the video tag.
+  </video>
+
+  <script>
+    // Balloon colors
+    const balloonColors = ['red', 'blue', 'green', 'yellow', 'purple'];
+
+    // Create a balloon element
+    function createBalloon() {
+      const balloon = document.createElement('div');
+      balloon.classList.add('balloon');
+      balloon.style.backgroundColor = balloonColors[Math.floor(Math.random() * balloonColors.length)];
+      balloon.addEventListener('click', () => popBalloon(balloon));
+      return balloon;
+    }
+
+    // Pop a balloon and remove it
+    function popBalloon(balloon) {
+      balloon.style.display = 'none';
+    }
+
+    // Start the game
+    function startGame() {
+      const balloons = document.getElementById('balloons');
+      balloons.innerHTML = '';
+      for (let i = 0; i < 10; i++) {
+        const balloon = createBalloon();
+        balloons.appendChild(balloon);
+      }
+      document.getElementById('start-button').style.display = 'none';
+    }
+
+    // Play the birthday video
+    function playBirthdayVideo() {
+      const video = document.getElementById('birthday-video');
+      video.style.display = 'block';
+      video.play();
+    }
+
+    // Add event listener to start the game
+    document.getElementById('start-button').addEventListener('click', startGame);
+
+    // Add event listener to play the video at the end
+    document.querySelectorAll('.balloon').forEach(balloon => {
+      balloon.addEventListener('click', () => {
+        if (document.querySelectorAll('.balloon[style*="display: none;"]').length === 10) {
+          playBirthdayVideo();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
+
